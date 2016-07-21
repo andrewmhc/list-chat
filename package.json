@@ -1,14 +1,15 @@
 {
   "name": "list-chat",
   "version": "0.0.1",
-  "description": "chatroom with socketio",
+  "description": "todo list with a chatroom",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.4.3",
     "express": "^4.10.2",
-    "socket.io": "^1.4.8",
     "method-override": "^2.1.3",
-    "mongoose"       : "^4.4.12",
-    "morgan"         : "^1.1.1",
-    "body-parser"    : "^1.4.3"
+    "mongoose": "^4.4.12",
+    "morgan": "^1.1.1",
+    "nodemon": "^1.9.2",
+    "socket.io": "^1.4.8"
   }
 }
