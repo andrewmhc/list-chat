@@ -8,7 +8,6 @@ function mainController($scope, $http) {
         $http.get('/api/todos')
         .success(function(data) {
             $scope.todos = data;
-            console.log(data);
         })
         .error(function(data) {
             console.log('Error: ' + data);
@@ -21,7 +20,6 @@ function mainController($scope, $http) {
             .success(function(data) {
                 $scope.formData = {};
                 $scope.todos = data;
-                console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -32,7 +30,6 @@ function mainController($scope, $http) {
         $http.delete('/api/todos/' + id)
             .success(function(data) {
                 $scope.todos = data;
-                console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -40,12 +37,10 @@ function mainController($scope, $http) {
     };
 
     socket.on('delete todo', function(msg){
-        console.log('updating todo');
         $scope.getTodo();
     })
 
     socket.on('add todo', function(msg){
-        console.log('updating todo');
         $scope.getTodo();
     })
 

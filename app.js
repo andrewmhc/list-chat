@@ -36,7 +36,6 @@ app.get('/api/todos', function(req, res) {
 });
 
 app.post('/api/todos', function(req, res) {
-    console.log("creating new item");
     Todo.create({
         text : req.body.text,
         done : false
@@ -53,8 +52,6 @@ app.post('/api/todos', function(req, res) {
 });
 
 app.delete('/api/todos/:todo_id', function(req, res) {
-    console.log("delete todo");
-
     Todo.remove({
         _id : req.params.todo_id
     }, function(err, todo) {
