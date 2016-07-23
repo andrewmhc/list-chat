@@ -31,7 +31,6 @@ app.get('/api/todos', function(req, res) {
     Todo.find(function(err, todos) {
         if (err)
             res.send(err)
-
         res.json(todos);
     });
 });
@@ -47,13 +46,15 @@ app.post('/api/todos', function(req, res) {
         Todo.find(function(err, todos) {
             if (err)
                 res.send(err)
+            io.emit('add todo', "todo added");
             res.json(todos);
         });
     });
-
 });
 
 app.delete('/api/todos/:todo_id', function(req, res) {
+    console.log("delete todo");
+
     Todo.remove({
         _id : req.params.todo_id
     }, function(err, todo) {
@@ -63,6 +64,8 @@ app.delete('/api/todos/:todo_id', function(req, res) {
         Todo.find(function(err, todos) {
             if (err)
                 res.send(err)
+
+            io.emit('delete todo', "todo deleted");
             res.json(todos);
         });
     });

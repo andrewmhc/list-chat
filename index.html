@@ -7,6 +7,7 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
       form { padding: 3px; position: fixed; bottom: 0; width: 49%; }
+      form input { border: 0; padding: 10px; width: 85%; margin-right: .5%; }
       ul {width: 50%;}
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
@@ -23,19 +24,17 @@
           <h1 style="font-size:5vw">Todo List<span class="label"></span></h1>
       </div>
       <div id="todo-list" class="row">
-          <div class="col-sm-4 col-sm-offset-4">
-
-              <div class="checkbox" ng-repeat="todo in todos">
-                  <label>
-                      <input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}
-                  </label>
+          <div class="col-sm-4 col-sm-offset-4 deleteTodo">
+              <div id="todos" class="checkbox" ng-repeat="todo in todos">
+                 <label>
+                    <input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}</input>
+                 </label>
               </div>
-
           </div>
       </div>
       <div id="todo-form" class="row">
           <div class="col-sm-8  text-center">
-              <form>
+              <form class="addTodo">
                   <div class="form-group">
                       <input type="text" class="form-control input-lg" placeholder="Enter your todo item here" style="font-size:1vw;" ng-model="formData.text">
                   </div>
@@ -72,8 +71,8 @@
       $('.chatForm').submit(function(){
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
-        return false;
       });
+
       socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
       });

@@ -4,7 +4,8 @@ function mainController($scope, $http) {
     $scope.formData = {};
 
     // get todolist items from db
-    $http.get('/api/todos')
+    $scope.getTodo = function() {
+        $http.get('/api/todos')
         .success(function(data) {
             $scope.todos = data;
             console.log(data);
@@ -12,6 +13,8 @@ function mainController($scope, $http) {
         .error(function(data) {
             console.log('Error: ' + data);
         });
+    }
+
 
     $scope.createTodo = function() {
         $http.post('/api/todos', $scope.formData)
@@ -35,5 +38,17 @@ function mainController($scope, $http) {
                 console.log('Error: ' + data);
             });
     };
+
+    socket.on('delete todo', function(msg){
+        console.log('updating todo');
+        $scope.getTodo();
+    })
+
+    socket.on('add todo', function(msg){
+        console.log('updating todo');
+        $scope.getTodo();
+    })
+
+    $scope.getTodo();
 
 }
