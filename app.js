@@ -7,9 +7,12 @@ var mongoose = require('mongoose');
 var morgan = require('morgan');           
 var bodyParser = require('body-parser');  
 var methodOverride = require('method-override');
-var config = require('./superSecretDatabaseConfig');
 
-mongoose.connect('mongodb://' + config.mongoUsername + ':' + config.mongoPassword + config.database);
+var mongoUsername = process.env.mongoUsername;
+var mongoPassword = process.env.mongoPassword;
+var database = process.env.database;
+
+mongoose.connect('mongodb://' + mongoUsername + ':' + mongoPassword + database);
 
 app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
