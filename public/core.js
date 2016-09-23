@@ -4,30 +4,30 @@ function mainController($scope, $http) {
     $scope.formData = {};
     angular.element(document).ready(function () {
         socket.emit('connection', window.location.pathname)
-        $scope.getTodo();
+        $scope.getTodo()
     })
 
     $scope.getTodo = function() {
         $scope.formData.url = window.location.pathname
         $http.post('/api/getTodos', $scope.formData)
         .success(function(data) {
-            $scope.todos = data;
+            $scope.todos = data
         })
         .error(function(data) {
-            console.log('Error: ' + data);
-        });
+            console.log('Error: ' + data)
+        })
     }
 
     $scope.createTodo = function() {
         $scope.formData.url = window.location.pathname
         $http.post('/api/todos', $scope.formData)
             .success(function(data) {
-                $scope.formData = {};
-                $scope.todos = data;
+                $scope.formData = {}
+                $scope.todos = data
             })
             .error(function(data) {
-                console.log('Error: ' + data);
-            });
+                console.log('Error: ' + data)
+            })
     };
 
     $scope.deleteTodo = function(id) {
@@ -38,13 +38,13 @@ function mainController($scope, $http) {
                 .success(function(data) {
                 })
                 .error(function(data) {
-                    console.log('Error: ' + data);
-                });
+                    console.log('Error: ' + data)
+                })
             })
             .error(function(data) {
-                console.log('Error: ' + data);
-            });
-    };
+                console.log('Error: ' + data)
+            })
+    }
 
     socket.on('update todo', function(todos){
         console.log('hey')
@@ -53,7 +53,7 @@ function mainController($scope, $http) {
     })
 
     socket.on('share link', function() {
-        socket.emit('share link', "Chatroom link: " + window.location);
+        socket.emit('share link', "Chatroom link: " + window.location)
     })
 
 }
@@ -70,6 +70,6 @@ function indexController($scope, $http) {
             })
             .error(function(data) {
                 console.log('Error: ' + data)
-            });
-    };
+            })
+    }
 }
