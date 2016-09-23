@@ -8,13 +8,9 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');  
 var methodOverride = require('method-override');
 
-// var mongoUsername = process.env.mongoUsername;
-// var mongoPassword = process.env.mongoPassword;
-// var database = process.env.database;
-
-var mongoUsername = "andrew";
-var mongoPassword = "keyboarded123";
-var database = '@jello.modulusmongo.net:27017/uho5mipY';
+var mongoUsername = process.env.mongoUsername;
+var mongoPassword = process.env.mongoPassword;
+var database = process.env.database;
 
 mongoose.connect('mongodb://' + mongoUsername + ':' + mongoPassword + database);
 
@@ -31,6 +27,8 @@ var Todo = mongoose.model('Todo', {
 });
 
 var rooms = new Array()
+var user = new Array()
+var userCount = new Array()
 // routes ======================================================================
 
 app.get('/', function(req, res){
@@ -39,8 +37,8 @@ app.get('/', function(req, res){
 
 app.get('/api/chatroom', function(req, res) {
     var room = '/' + new Date().getTime()
-    console.log(room)
     rooms.push(room)
+    userCount[room] = 0;
     app.get(room, function(req, res) {
         res.sendFile(__dirname + '/public/chatroom.html')
     })
@@ -51,7 +49,6 @@ app.post('/api/getTodos', function(req, res) {
     Todo.find({room : req.body.url}, function(err, todos) {
         if (err)
             res.send(err)
-        console.log(req)
         io.in(req.body.url).emit('update todo', todos);
         res.json(todos);
     });
@@ -78,48 +75,50 @@ app.post('/api/todos', function(req, res) {
 app.delete('/api/todos/:todo_id', function(req, res) {
     Todo.remove({
         _id : req.params.todo_id
-    }, function(err, todo) {
+    }, function(err, data) {
         if (err)
             res.send(err);
-        Todo.find({room : todo.room}, function(err, todos) {
-            if (err)
-                res.send(err)
-            io.in(todo.room).emit('update todo', todos);
-            res.json(todos);
-        });
+        res.json(data);
     });
 });
 
-// socket.io ======================================================================
+function newName(number) {
+    return 'User' + number
+}
+
+function getCurrentTime() {
+    return new Date(new Date().getTime()).toLocaleTimeString()
+}
 
 io.on('connection', function(socket){
+
   socket.on('connection', function(room){
     if (rooms.indexOf(room) > -1) {
         socket.join(room)
         rooms[socket.id] = room
+        user[socket.id] = newName(userCount[room])
+        userCount[room]++
+        if (user[socket.id] == "User0") {
+            io.in(rooms[socket.id]).emit('share link');
+        }
+        io.in(rooms[socket.id]).emit('chat message', getCurrentTime() + " " + user[socket.id] + " connected")
     }
   })
 
   socket.on('disconnect', function(){
-    console.log('user disconnected')
+    io.in(rooms[socket.id]).emit('chat message', getCurrentTime() + " " + user[socket.id] + " disconnected")
   })
 
   socket.on('chat message', function(msg){
-    io.in(rooms[socket.id]).emit('chat message', msg)
+    io.in(rooms[socket.id]).emit('chat message', getCurrentTime() + " " + user[socket.id] + ": " + msg)
   })
 
-  socket.on('add todo', function(msg){
-    io.in(rooms[socket.id]).emit('chat message', msg)
+  socket.on('share link', function(msg){
+    io.in(rooms[socket.id]).emit('chat message', getCurrentTime() + " " + "Bot" + ": " + msg)
   })
 
 })
 
-// io.on('connection', function(socket){
-//   socket.on('chat message', function(msg){
-//     io.emit('chat message', msg);
-//   });
-// });
-
 http.listen(process.env.PORT || 3000, function(){
-  console.log('listening on localhost:3000');
+  console.log('listening on localhost:3000')
 });
