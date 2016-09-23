@@ -17,6 +17,10 @@
       #todo-list              { margin-bottom:30px; }
       .responsive-width       { font-size: 2vw; }
     </style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="core.js"></script>
   </head>
   <body ng-controller="mainController">
     <div class="container" style="float:left; width:50%;">
@@ -25,7 +29,7 @@
       </div>
       <div id="todo-list" class="row">
           <div class="col-sm-4 col-sm-offset-4 deleteTodo">
-              <div id="todos" class="checkbox" ng-repeat="todo in todos">
+              <div id="todos" class="checkbox" ng-repeat="todo in todos" ng-cloak>
                  <label>
                     <input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}</input>
                  </label>
@@ -64,11 +68,6 @@
       </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-    <script src="core.js"></script>
-
     <script>
         var socket = io();
         $('.chatForm').submit(function(){
@@ -79,24 +78,6 @@
         socket.on('chat message', function(msg){
           $('#messages').append($('<li>').text(msg));
         });
-
-        $('.addTodo').submit(function(){
-          socket.emit('update todo', $('#t').val());
-          
-        });
-
-        socket.on('update todo', function(todos){
-          console.log("updating todos")
-          console.log(todos.length)
-          // $('#todos').empty();
-          // for (var i = 0; i < todos.length; i++) {
-          //   $('#todos').append($('<li>').text(todos[i].text));
-          // }
-          // for each (var todo in todos) {
-          //   //$('#todos').append($('<li>').text(todo.text));
-          // }
-        })
-
     </script>
   </body>
 </html>

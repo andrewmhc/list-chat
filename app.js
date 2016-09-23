@@ -1,19 +1,19 @@
 // list-chat
 var express = require('express')
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var mongoose = require('mongoose');                     
-var morgan = require('morgan');           
-var bodyParser = require('body-parser');  
-var methodOverride = require('method-override');
+var app = express()
+var http = require('http').Server(app)
+var io = require('socket.io')(http)
+var mongoose = require('mongoose')                     
+var morgan = require('morgan')   
+var bodyParser = require('body-parser')
+var methodOverride = require('method-override')
 var moment = require('moment-timezone')
 
-var mongoUsername = process.env.mongoUsername;
-var mongoPassword = process.env.mongoPassword;
-var database = process.env.database;
+var mongoUsername = process.env.mongoUsername
+var mongoPassword = process.env.mongoPassword
+var database = process.env.database
 
-mongoose.connect('mongodb://' + mongoUsername + ':' + mongoPassword + database);
+mongoose.connect('mongodb://' + mongoUsername + ':' + mongoPassword + database)
 
 app.use(express.static(__dirname + '/public'))
 app.use(morgan('dev'))
