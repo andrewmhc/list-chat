@@ -29,13 +29,10 @@
       </div>
       <div id="todo-list" class="row">
           <div class="col-sm-4 col-sm-offset-4 deleteTodo">
-              <div id="todos" class="checkbox" ng-repeat="todo in todos" ng-cloak>
+              <div id="todos" style="width:200%;" class="checkbox" ng-repeat="todo in todos" ng-cloak>
                  <label>
-                    <input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}</input>
+                    <input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}
                  </label>
-              </div>
-              <div class="container">
-
               </div>
           </div>
       </div>
@@ -55,7 +52,7 @@
       <div class="jumbotron text-center">
         <h1 style="font-size:5vw">Chatroom<span class="label"></span></h1>
       </div>
-      <ul id="messages"></ul>
+      <ul style="width:100%;" id="messages"></ul>
       <div id="todo-form" class="row">
         <div class="col-sm-8  text-center">
           <form action="" class="chatForm">
